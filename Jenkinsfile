@@ -14,7 +14,7 @@ pipeline {
                 echo 'Setting up Python environment and installing dependencies...'
                 sh '''
                     python3 -m venv venv
-                    source venv/bin/activate
+                    . venv/bin/activate
                     pip install -r requirements.txt
                     playwright install
                 '''
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 echo 'Running tests with Allure...'
                 sh '''
-                    source venv/bin/activate
+                    . venv/bin/activate
                     pytest --alluredir=allure-results
                 '''
             }
