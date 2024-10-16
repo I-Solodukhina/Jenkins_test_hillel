@@ -12,10 +12,11 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Setting up Python environment and installing dependencies...'
+                // Використання повного шляху до Python і pip
                 bat '''
-                    python -m .venv venv
+                    C:\\Users\\solod\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -m venv venv
                     venv\\Scripts\\activate
-                    pip install -r requirements.txt
+                    venv\\Scripts\\pip install -r requirements.txt
                 '''
             }
         }
@@ -25,7 +26,7 @@ pipeline {
                 echo 'Running tests...'
                 bat '''
                     venv\\Scripts\\activate
-                    pytest --junitxml=results.xml
+                    venv\\Scripts\\pytest --junitxml=results.xml
                 '''
             }
             post {
