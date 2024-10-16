@@ -6,7 +6,7 @@ from registration1 import RegistrationPage
 @pytest.fixture(scope="session")
 def browser():
     with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=False)
+        browser = playwright.chromium.launch(headless=True)
         yield browser
         browser.close()
 
