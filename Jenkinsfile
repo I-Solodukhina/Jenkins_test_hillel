@@ -26,7 +26,7 @@ pipeline {
                 echo 'Running tests with Allure...'
                 sh '''
                     . venv/bin/activate
-                    pytest --alluredir=allure-results
+                    pytest --junitxml=results.xml
                 '''
             }
         }
