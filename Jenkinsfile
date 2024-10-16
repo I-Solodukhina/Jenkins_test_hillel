@@ -23,19 +23,10 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                echo 'Running tests with Allure...'
+                echo 'Running tests...'
                 sh '''
                     . venv/bin/activate
-                    pytest --junitxml=results.xml
-                '''
-            }
-        }
-
-        stage('Generate Allure Report') {
-            steps {
-                echo 'Generating Allure Report...'
-                sh '''
-                    allure generate allure-results -o allure-report --clean
+                    pytest --junitxml=pytest-report.xml
                 '''
             }
         }
@@ -43,8 +34,7 @@ pipeline {
 
     post {
         always {
-            echo 'Publishing Allure results...'
-            allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+            junit 'pytest-report.xml'
         }
         success {
             emailext(
