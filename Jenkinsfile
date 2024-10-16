@@ -12,11 +12,11 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Setting up Python environment and installing dependencies...'
-                // Використання повного шляху до Python і pip
                 bat '''
                     C:\\Users\\solod\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -m venv venv
                     venv\\Scripts\\activate
                     venv\\Scripts\\pip install -r requirements.txt
+                    venv\\Scripts\\playwright install
                 '''
             }
         }
@@ -26,6 +26,7 @@ pipeline {
                 echo 'Running tests...'
                 bat '''
                     venv\\Scripts\\activate
+                    venv\\Scripts\\pip freeze
                     venv\\Scripts\\pytest --junitxml=results.xml
                 '''
             }
@@ -33,12 +34,6 @@ pipeline {
                 always {
                     junit 'results.xml'
                 }
-            }
-        }
-
-        stage('Publish Test Results') {
-            steps {
-                echo 'Publishing test results to Jenkins...'
             }
         }
     }
