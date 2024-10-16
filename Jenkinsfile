@@ -23,22 +23,29 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                echo 'Running tests...'
+                echo 'Running tests with Allure...'
                 bat '''
                     venv\\Scripts\\activate
-                    venv\\Scripts\\pytest --junitxml=results.xml -v
-                    dir
+                    venv\\Scripts\\pytest --alluredir=allure-results
                 '''
             }
-            post {
-                always {
-                    junit 'results.xml'
-                }
+        }
+
+        stage('Generate Allure Report') {
+            steps {
+                echo 'Generating Allure Report...'
+                bat '''
+                    allure generate allure-results -o allure-report --clean
+                '''
             }
         }
     }
 
     post {
+        always {
+            echo 'Publishing Allure results...'
+            allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+        }
         success {
             emailext(
                 subject: "Jenkins Pipeline Success: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
