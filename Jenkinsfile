@@ -26,7 +26,7 @@ pipeline {
                 echo 'Running tests...'
                 bat '''
                     venv\\Scripts\\activate
-                    venv\\Scripts\\pytest --junitxml=results.xml
+                    venv\\Scripts\\pytest --junitxml=results.xml -v
                     dir
                 '''
             }
