@@ -26,8 +26,8 @@ pipeline {
                 echo 'Running tests...'
                 bat '''
                     venv\\Scripts\\activate
-                    venv\\Scripts\\pip freeze
                     venv\\Scripts\\pytest --junitxml=results.xml
+                    dir
                 '''
             }
             post {
