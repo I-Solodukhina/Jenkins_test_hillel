@@ -26,7 +26,7 @@ pipeline {
                 echo 'Running tests...'
                 sh '''
                     . venv/bin/activate
-                    pytest --junitxml=pytest-report.xml
+                    pytest --junitxml=results.xml
                 '''
             }
         }
@@ -34,23 +34,24 @@ pipeline {
 
     post {
         always {
-            junit 'pytest-report.xml'
+            junit 'results.xml'
         }
         success {
             emailext(
                 subject: "Jenkins Pipeline Success: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: "The Jenkins pipeline for ${env.JOB_NAME} has completed successfully.",
-                to: 'solodushka@gmail.com'
-                attachmentsPattern: "pytest-report.xml"
+                to: 'solodushka@gmail.com',
+                attachmentsPattern: 'results.xml'
             )
         }
         failure {
             emailext(
                 subject: "Jenkins Pipeline Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: "The Jenkins pipeline for ${env.JOB_NAME} has failed. Please check the Jenkins logs for more details.",
-                to: 'solodushka@gmail.com'
-                attachmentsPattern: "pytest-report.xml"
+                to: 'solodushka@gmail.com',
+                attachmentsPattern: 'results.xml'
             )
         }
     }
 }
+
